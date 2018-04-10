@@ -1,0 +1,73 @@
+
+--Creates table users
+create table users(uid serial primary key not null, utype varchar(20) not null, user_name varchar(50) not null, user_Lname varchar(50) not null, Address1 varchar(100) not null, city varchar(50) not null, State varchar(25) not null, zipcode varchar(10) not null, country varchar(20) not null, phone varchar(20) not null, user_email varchar(30) UNIQUE not null , user_nickname varchar(25) unique not null, user_password text not null, user_created timestamp not null);
+
+--Creates table Category
+create table Category(cid serial primary key not null, cat_name varchar(100) not null);
+
+
+-- Creates table Products
+create table Products(pid serial primary key not null, pname varchar(50) not null, description varchar(500), pprice numeric(7, 2) CHECK (pprice >0) not null, shipping_cost numeric(7,2) Check(shipping_cost >0)not null,cid integer references Category(cid) not null, uid integer references users(uid));
+
+--Create table Cart
+create table Cart(caid serial primary key not null, cart_id integer, uid integer references Users(uid), pid integer references Products(pid) not null, p_qty integer DEFAULT 0);
+
+--Creates table Orders
+create table Orders(order_id serial primary key not null, cart_id integer references Cart(caid), uid integer references Users(uid));
+
+--Create relation Posts
+create table Posts(uid integer references users(uid), pid integer references Products(pid), qty integer, primary key(uid,pid));
+
+
+--Create relation Ships_to
+create table Ships_to(uid integer references users(uid), order_id integer references Orders(order_id), primary key(uid,order_id));
+
+--Create table Events
+create table Events(event_id serial primary key, event varchar(500), e_description varchar(1000), e_date date, e_location varchar(200));
+
+--Inserts de las tablas 
+
+--User
+insert into users(utype, user_name, user_lname, address1, city, state, zipcode, country, phone, user_email, user_nickname, user_password, user_created)
+values('admin', 'Juana', 'Matas', 'Calle Trinidad #343', 'Mayaguez', 'PR', '00681', 'Puerto Rico', '787-444-4444', 'admin@example.com', 'admin', 'estingtddd', NOW());
+
+insert into users(utype, user_name, user_lname, address1, city, state, zipcode, country, phone, user_email, user_nickname, user_password, user_created)
+values('seller', 'Marco', 'Polo', 'Calle Loca 9022 interior', 'Orocovis', 'PR', '00320', 'Puerto Rico', '787-656-5959', 'seller@example.com', 'IamSeller', 'ejfjsueu.999', NOW());
+
+insert into users(utype, user_name, user_lname, address1, city, state, zipcode, country, phone, user_email, user_nickname, user_password, user_created)
+values('user', 'Petra', 'Lopez', 'Box 000000', 'Moca', 'PR', '00662', 'Puerto Rico', '787-999-9999', 'user@example.com', 'Mikalea', 'lanoidhf88', NOW());
+
+insert into users(utype, user_name, user_lname, address1, city, state, zipcode, country, phone, user_email, user_nickname, user_password, user_created)
+values('user', 'Minga', 'Ortiz', 'CUrb Soyrica', 'San Juan', 'PR', '00936', 'Puerto Rico', '787-333-5555', 'other@example.com', 'Donot_do', 'lolamentooooods3d', NOW());
+
+insert into users(utype, user_name, user_lname, address1, city, state, zipcode, country, phone, user_email, user_nickname, user_password, user_created)
+values('admin', 'Juan', 'Perez', 'Calle Sol', 'Mayaguez', 'PR', '00681', 'Puerto Rico', '787-456-7891', 'admin2@example.com', 'admin2', 'estingtddedfsd', NOW());
+
+insert into users(utype, user_name, user_lname, address1, city, state, zipcode, country, phone, user_email, user_nickname, user_password, user_created)
+values('seller', 'Mary', 'Poppins', 'Condominio La loba negra Apt 66', 'Carolina', 'PR', '00987', 'Puerto Rico', '787-988-0000', 'seller2@example.com', 'GreatVendor', 'mamamidueh33', NOW());
+
+--Categories
+insert into Category (cat_name) values('Arte');
+insert into Category (cat_name) values('Ropa');
+insert into Category (cat_name) values('Artesanias');
+insert into Category (cat_name) values('Joyeria');
+insert into Category (cat_name) values('Servicios');
+insert into Category (cat_name) values('Comestibles');
+
+
+--Products
+insert into Products(pname, description, pprice, shipping_cost, cid, uid) values('Pantallas de Plata', 'Pantallas de plata hermosas', 9.99, 5.00, 1, 2);
+
+insert into Products(pname, description, pprice, shipping_cost, cid, uid) values('Blusas tejidas', 'Blusas tejidas en varios tamaños', 15.99, 5.00, 2, 6);
+
+insert into Products(pname, description, pprice, shipping_cost, cid, uid) values('Vasos de cristal', 'Vasos de cristal grabados', 10.00, 5.00, 3, 2);
+
+
+
+
+
+
+
+
+
+
