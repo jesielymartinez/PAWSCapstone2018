@@ -1,0 +1,72 @@
+
+create table Forum_Category (f_cat_id serial primary key not null,
+f_cat_name character varying(20) not null,
+f_cat_desc text not null);
+
+
+create table forum_topics (topic_id serial primary key not null,
+topic_name character varying(255) NOT NULL,
+  topic_desc character varying(255),
+  topic_cat integer references Forum_Category(f_cat_id) NOT NULL,
+  topic_owner integer references users(uid) NOT NULL
+  ) 
+
+
+  CREATE TABLE public.users
+(
+  uid integer NOT NULL ,
+  utype character varying(20) NOT NULL,
+  user_name character varying(50) NOT NULL,
+  user_lname character varying(50) NOT NULL,
+  address1 character varying(100) NOT NULL,
+  city character varying(50) NOT NULL,
+  state character varying(25) NOT NULL,
+  zipcode character varying(10) NOT NULL,
+  country character varying(20) NOT NULL,
+  phone character varying(20) NOT NULL,
+  user_email character varying(30) NOT NULL,
+  user_nickname character varying(25) NOT NULL,
+  user_password text NOT NULL,
+  user_created timestamp without time zone NOT NULL,
+  CONSTRAINT users_pkey PRIMARY KEY (uid),
+  CONSTRAINT users_user_email_key UNIQUE (user_email),
+  CONSTRAINT users_user_nickname_key UNIQUE (user_nickname),
+  CONSTRAINT users_user_password_check CHECK (user_password ~~ '%[^a-zA-Z0-9!@#$%^&*()-_+=.,;:`~]%'::text AND char_length(user_password) >= 8 AND char_length(user_password) <= 25)
+)
+
+CREATE TABLE public.post
+(
+  post_id integer NOT NULL,
+  post_content text NOT NULL,
+  post_date timestamp without time zone NOT NULL,
+  post_topic integer NOT NULL,
+  post_by integer NOT NULL,
+  CONSTRAINT post_pkey PRIMARY KEY (post_id),
+  CONSTRAINT post_post_by_fkey FOREIGN KEY (post_by)
+      REFERENCES public.users (uid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT post_post_topic_fkey FOREIGN KEY (post_topic)
+      REFERENCES public.forum_topics (topic_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+
+
+create table public.answers
+(
+  answers_id integer NOT NULL ,
+  answers_content text NOT NULL,
+  answers_date timestamp without time zone NOT NULL,
+  answers_post integer NOT NULL,
+  answers_by integer NOT NULL,
+  CONSTRAINT answers_pkey PRIMARY KEY (answers_id),
+  CONSTRAINT answers_answers_by_fkey FOREIGN KEY (answers_by)
+      REFERENCES public.users (uid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT answers_answers_post_fkey FOREIGN KEY (answers_post)
+      REFERENCES public.post (post_id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+
+
+
+
