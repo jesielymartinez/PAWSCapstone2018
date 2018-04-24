@@ -1,0 +1,26 @@
+﻿select distinct uid, user_name, user_lname from Users natural inner join Products where utype = 'seller';
+
+--Query para buscar el nombre, dirección, teléfono del usuario que hizo la orden y producto y cantidad
+
+with buyer as 
+(select user_name, user_lname, address1, city,state,zipcode,phone from Users 
+where uid=(select uid from cart where caid=(select cart_id from orders where orders_id=1))),
+product_bought as (select pname from products 
+where pid=(select pid from cart where caid=(select cart_id from orders where orders_id=1))),
+quantity as (select p_qty from cart where caid=(select cart_id from orders where orders_id=1))
+
+select * from buyer natural inner join product_bought natural inner join quantity
+
+– Query para buscar la cantidad de productos que un vendedor ha puesto
+
+select count(*) from Users natural inner join Products where uid=6
+
+select pid, pname from Products natural inner join Users where uid= 2
+
+
+with productos as (select pname from Products where pid = (select pid from cart)), 
+ usuario as (select user_name, user_lname from  users where uid = (select uid from Cart)),
+ cantidad as (select p_qty from Cart)
+
+ select * from productos natural inner join usuario natural inner join cantidad
+
