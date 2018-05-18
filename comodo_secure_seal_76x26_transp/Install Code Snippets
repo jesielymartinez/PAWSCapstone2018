@@ -1,0 +1,21 @@
+Install Code Snippets
+
+Please insert the following two snippets of HTML code into your webpage document. You will need to repeat the process for each web page you wish to display the TrustLogo.
+
+Add this before your </HEAD> tag
+<script type="text/javascript"> //<![CDATA[ 
+var tlJsHost = ((window.location.protocol == "https:") ? "https://secure.comodo.com/" : "http://www.trustlogo.com/");
+document.write(unescape("%3Cscript src='" + tlJsHost + "trustlogo/javascript/trustlogo.js' type='text/javascript'%3E%3C/script%3E"));
+//]]>
+</script>
+
+
+
+---------------------------------------------------
+
+Add this before your </BODY> tag
+
+<script language="JavaScript" type="text/javascript">
+TrustLogo("https://huellasinfronteras.com/image/comodo_secure_seal_100x85_transp.png", "CL1", "none");
+</script>
+<a  href="https://www.positivessl.com/" id="comodoTL">Positive SSL Wildcard</a>
